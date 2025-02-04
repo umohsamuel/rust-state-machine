@@ -1,6 +1,6 @@
-[workspace]
-members = [
- "init"
-]
+[package]
+name = "rust-state-machine"
+version = "0.1.0"
+edition = "2021"
 
-resolver = "2"
+[dependencies]
