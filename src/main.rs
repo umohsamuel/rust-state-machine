@@ -1,10 +1,29 @@
+use crate::{balances::Config as BalancesConfig, system::Config};
+
 mod balances;
 mod system;
 
+mod types {
+	pub type AccountId = String;
+	pub type Balance = u128;
+	pub type Nonce = u32;
+	pub type BlockNumber = u32;
+}
+
 #[derive(Debug)]
 pub struct Runtime {
-	system: system::Pallet,
-	balances: balances::Pallet,
+	system: system::Pallet<Self>,
+	balances: balances::Pallet<Self>,
+}
+
+impl Config for Runtime {
+	type AccountId = types::AccountId;
+	type Nonce = types::Nonce;
+	type BlockNumber = types::BlockNumber;
+}
+
+impl BalancesConfig for Runtime {
+	type Balance = types::Balance;
 }
 
 impl Runtime {
@@ -27,7 +46,7 @@ fn main() {
 		.map_err(|e| eprint!("{}", e));
 
 	runtime.system.inc_nonce(&String::from("alice"));
-	let _bal = runtime
+	let _res = runtime
 		.balances
 		.transfer(String::from("alice"), String::from("charlie"), 20)
 		.map_err(|e| eprint!("{}", e));

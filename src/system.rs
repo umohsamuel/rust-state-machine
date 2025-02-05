@@ -1,35 +1,49 @@
-use std::collections::BTreeMap;
+use num::traits::{One, Zero};
+use std::{collections::BTreeMap, ops::AddAssign};
 
+pub trait Config {
+	type AccountId: Ord + Clone;
+	type Nonce: Copy + Zero + One;
+	type BlockNumber: Zero + Copy + One + AddAssign;
+}
 #[derive(Debug)]
-pub struct Pallet {
-	block_number: u32,
-	nonce: BTreeMap<String, u32>,
+pub struct Pallet<T: Config> {
+	block_number: T::BlockNumber,
+	nonce: BTreeMap<T::AccountId, T::Nonce>,
 }
 
-impl Pallet {
+impl<T: Config> Pallet<T> {
 	pub fn new() -> Self {
-		Self { block_number: 0, nonce: BTreeMap::new() }
+		Self { block_number: T::BlockNumber::zero(), nonce: BTreeMap::new() }
 	}
 
-	pub fn block_number(&self) -> u32 {
+	pub fn block_number(&self) -> T::BlockNumber {
 		self.block_number
 	}
 
 	pub fn inc_block_number(&mut self) {
-		self.block_number += 1;
+		self.block_number += T::BlockNumber::one();
 	}
 
-	pub fn inc_nonce(&mut self, who: &String) {
-		let current_nonce = self.nonce.get(who).unwrap_or(&0);
-		self.nonce.insert(who.clone(), *current_nonce + 1);
+	pub fn inc_nonce(&mut self, who: &T::AccountId) {
+		let current_nonce = *self.nonce.get(who).unwrap_or(&T::Nonce::zero());
+		self.nonce.insert(who.clone(), current_nonce + T::Nonce::one());
 	}
 }
 
 #[cfg(test)]
 mod test {
+	use super::Config;
+	struct TestConfig;
+	impl Config for TestConfig {
+		type AccountId = String;
+		type Nonce = u32;
+		type BlockNumber = u32;
+	}
+
 	#[test]
 	fn init_system() {
-		let mut system = super::Pallet::new();
+		let mut system = super::Pallet::<TestConfig>::new();
 		system.inc_block_number();
 		assert_eq!(system.block_number(), 1);
 		system.inc_nonce(&String::from("alice"));
