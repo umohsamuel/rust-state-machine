@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 
+#[derive(Debug)]
 pub struct Pallet {
 	balances: BTreeMap<String, u128>,
 }
@@ -17,7 +18,12 @@ impl Pallet {
 		*self.balances.get(who).unwrap_or(&0)
 	}
 
-	pub fn transfer(&mut self, caller: String, to: String, amount: u128)-> Result<(), &'static str>{
+	pub fn transfer(
+		&mut self,
+		caller: String,
+		to: String,
+		amount: u128,
+	) -> Result<(), &'static str> {
 		/* TODO:
 			- Get the balance of account `caller`.
 			- Get the balance of account `to`.
@@ -33,7 +39,8 @@ impl Pallet {
 
 		let to_balance = self.balance(&to);
 
-		let new_caller_balance = caller_balance.checked_sub(amount).ok_or("Insufficient balance")?;
+		let new_caller_balance =
+			caller_balance.checked_sub(amount).ok_or("Insufficient balance")?;
 		let new_to_balance = to_balance.checked_add(amount).ok_or("Failed to complete")?;
 
 		self.set_balance(&caller, new_caller_balance);
@@ -71,7 +78,10 @@ mod tests {
 		*/
 		let mut balances = super::Pallet::new();
 
-		assert_eq!(balances.transfer("alice".to_string(), "bob".to_string(), 100), Err("Insufficient balance"));
+		assert_eq!(
+			balances.transfer("alice".to_string(), "bob".to_string(), 100),
+			Err("Insufficient balance")
+		);
 
 		balances.set_balance(&"alice".to_string(), 100);
 
@@ -79,6 +89,5 @@ mod tests {
 
 		assert_eq!(balances.balance(&"alice".to_string()), 50);
 		assert_eq!(balances.balance(&"bob".to_string()), 50);
-
 	}
 }
