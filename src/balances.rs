@@ -24,17 +24,6 @@ impl Pallet {
 		to: String,
 		amount: u128,
 	) -> Result<(), &'static str> {
-		/* TODO:
-			- Get the balance of account `caller`.
-			- Get the balance of account `to`.
-
-			- Use safe math to calculate a `new_caller_balance`.
-			- Use safe math to calculate a `new_to_balance`.
-
-			- Insert the new balance of `caller`.
-			- Insert the new balance of `to`.
-		*/
-
 		let caller_balance = self.balance(&caller);
 
 		let to_balance = self.balance(&to);
@@ -52,16 +41,9 @@ impl Pallet {
 
 #[cfg(test)]
 mod tests {
-	use super::Pallet;
 
 	#[test]
 	fn init_balances() {
-		/* TODO: Create a mutable variable `balances`, which is a new instance of `Pallet`. */
-		/* TODO: Assert that the balance of `alice` starts at zero. */
-		/* TODO: Set the balance of `alice` to 100. */
-		/* TODO: Assert the balance of `alice` is now 100. */
-		/* TODO: Assert the balance of `bob` has not changed and is 0. */
-
 		let mut balances = super::Pallet::new();
 		assert_eq!(balances.balance(&"alice".to_string()), 0);
 		balances.set_balance(&"alice".to_string(), 100);
@@ -71,11 +53,6 @@ mod tests {
 
 	#[test]
 	fn transfer_balance() {
-		/* TODO: Create a test that checks the following:
-			- That `alice` cannot transfer funds she does not have.
-			- That `alice` can successfully transfer funds to `bob`.
-			- That the balance of `alice` and `bob` is correctly updated.
-		*/
 		let mut balances = super::Pallet::new();
 
 		assert_eq!(
