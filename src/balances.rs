@@ -1,4 +1,4 @@
-use crate::system;
+use crate::{support, system};
 use num::traits::{CheckedAdd, CheckedSub, Zero};
 use std::collections::BTreeMap;
 
@@ -29,7 +29,7 @@ impl<T: Config> Pallet<T> {
 		caller: T::AccountId,
 		to: T::AccountId,
 		amount: T::Balance,
-	) -> Result<(), &'static str> {
+	) -> support::DispatchResult {
 		let caller_balance = self.balance(&caller);
 
 		let to_balance = self.balance(&to);
@@ -40,6 +40,25 @@ impl<T: Config> Pallet<T> {
 
 		self.set_balance(&caller, new_caller_balance);
 		self.set_balance(&to, new_to_balance);
+
+		Ok(())
+	}
+}
+
+pub enum Call<T: Config> {
+	Transfer { to: T::AccountId, amount: T::Balance },
+}
+
+impl<T: Config> support::Dispatch for Pallet<T> {
+	type Caller = T::AccountId;
+	type Call = Call<T>;
+
+	fn dispatch(&mut self, caller: Self::Caller, call: Self::Call) -> support::DispatchResult {
+		match call {
+			Call::Transfer { to, amount } => {
+				self.transfer(caller, to, amount)?;
+			},
+		}
 
 		Ok(())
 	}
