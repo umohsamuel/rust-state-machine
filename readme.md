@@ -1,4 +1,4 @@
-# 🔄 Rust State Machine
+# Rust State Machine
 
 A minimal, type-safe **state machine** implementation written in **Rust**, designed to model predictable and testable transitions between states.
 
@@ -6,18 +6,18 @@ This project demonstrates how Rust’s type system, enums, and pattern matching 
 
 ---
 
-## 🚀 Features
+## Features
 
-- ✅ Finite state machine (FSM) implementation
-- 🔄 Predictable state transitions
-- 🧪 Testable and deterministic logic
-- 🔍 Transparent transition logging (optional)
-- ♻️ Built with Enums and Rust traits
-- 📚 Great for modeling workflows, UIs, lifecycles, etc.
+- Finite state machine (FSM) implementation
+- Predictable state transitions
+- Testable and deterministic logic
+- Transparent transition logging (optional)
+- Built with Enums and Rust traits
+- Great for modeling workflows, UIs, lifecycles, etc.
 
 ---
 
-## 📦 Use Cases
+## Use Cases
 
 - Task/workflow automation
 - UI/UX page or modal states
@@ -27,7 +27,7 @@ This project demonstrates how Rust’s type system, enums, and pattern matching 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```bash
 rust-state-machine/
@@ -40,7 +40,7 @@ rust-state-machine/
 └── README.md # Project documentation
 ```
 
-## 📦 Installation & Running
+## Installation & Running
 
 > Requires [Rust & Cargo](https://www.rust-lang.org/tools/install)
 
@@ -58,14 +58,14 @@ cargo run
 ```
 This runs the main demonstration of the state machine logic.
 
-## 🧪 Running Tests
+## Running Tests
 ```bash
 cargo test
 ```
 All state transitions and logic validations are covered under unit tests.
 
 
-## 🔧 Example State Machine
+## Example State Machine
 A basic structure might look like:
 
 ```bash
